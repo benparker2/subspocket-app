@@ -1,2 +1,16 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<!-- src/routes/+page.svelte -->
+<script lang="ts">
+
+
+	export let data
+</script>
+
+<svelte:head>
+	<title>SubsPocket - Sign in</title>
+</svelte:head>
+
+<div class="row flex-center flex">
+	<div class="col-6 form-widget">
+        Auth todo
+	</div>
+</div>
