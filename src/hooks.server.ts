@@ -1,8 +1,9 @@
 import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY } from '$env/static/public'
 import { createServerClient } from '@supabase/ssr'
-import type { Handle } from '@sveltejs/kit'
+import { redirect, type Handle } from '@sveltejs/kit'
+import { sequence } from '@sveltejs/kit/hooks'
 
-export const handle: Handle = async ({ event, resolve }) => {
+export const supabase: Handle = async ({ event, resolve }) => {
     event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY, {
         cookies: {
             get: (key) => event.cookies.get(key),
@@ -38,3 +39,27 @@ export const handle: Handle = async ({ event, resolve }) => {
         },
     })
 }
+
+const authorization: Handle = async ({ event, resolve }) => {
+    // protect requests to all routes id that start with (app)
+    if (event.route.id?.startsWith('/(app)')) {
+        const session = await event.locals.getSession()
+        if (!session) {
+            // the user is not signed in
+            throw redirect(303, '/sign-in')
+        }
+    }
+
+    // protect requests to all routes id that start with (auth) except (auth)/sign-out
+    if (event.route.id?.startsWith('/(auth)') && !event.route.id?.startsWith('/(auth)/sign-out')) {
+        const session = await event.locals.getSession()
+        if (session) {
+            // the user is not signed in
+            throw redirect(303, '/')
+        }
+    }
+
+    return resolve(event)
+}
+
+export const handle = sequence(supabase, authorization)
