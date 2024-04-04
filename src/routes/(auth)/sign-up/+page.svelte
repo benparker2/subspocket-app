@@ -1,64 +1,62 @@
 <script lang="ts">
     import { Button } from "$lib/components/ui/button";
-    import { Label } from "$lib/components/ui/label";
     import Google from "$lib/components/icons/Google.svelte";
     import Input from "$lib/components/input/Input.svelte";
     import InputPassword from "$lib/components/input/InputPassword.svelte";
     import type { ActionData } from "./$types";
-    import { applyAction, enhance } from "$app/forms";
+    import { enhance } from "$app/forms";
     import { toast } from "svelte-sonner";
 
     export let form: ActionData;
 
     $: if (form?.error) {
-        toast.error("An error occurred", {
-            description: form.error,
-            style: "error"
-        });
+        toast.error(form.error);
+    }
+
+    $: if (form?.message) {
+        toast.success(form.message);
     }
 </script>
 
 <svelte:head>
-    <title>Subspocket | Sign up</title>
+    <title>SubsPocket | Sign up</title>
 </svelte:head>
 
 <div class="h-full flex items-center justify-center">
     <div class="mx-auto grid w-full max-w-[450px] gap-6 px-6">
         <div class="grid gap-2 text-center">
+            <img class="w-[85px] m-auto mb-2 rounded" src="/logo.png" alt="">
             <h1 class="text-2xl font-bold">Create a SubsPocket account</h1>
             <p class="text-balance text-muted-foreground text-sm">
-                Already have an account? <a href="##" class="underline">Sign in</a>
+                Already have an account? <a href="/sign-in" class="underline">Sign in</a>
             </p>
         </div>
         <form class="grid gap-4" method="POST" action="?/signup" use:enhance>
             <div class="grid gap-2">
-                <Label for="full_name">Full name</Label>
                 <Input
                     id="full_name"
                     name="full_name"
                     type="text"
-                    placeholder="John Doe"
+                    placeholder="Full name"
                     issues="{form?.issues?.full_name}"
                     required
                 />
             </div>
             <div class="grid gap-2">
-                <Label for="email">Email address</Label>
                 <Input
                     id="email"
                     name="email"
                     type="email"
-                    placeholder="johndoe@example.com"
+                    placeholder="Email address"
                     issues="{form?.issues?.email}"
                     required
                 />
             </div>
             <div class="grid gap-2">
-                <Label for="password">Password</Label>
                 <InputPassword
                     id="password"
                     name="password"
-                    placeholder="..."
+                    placeholder="Password"
                     issues="{form?.issues?.password}"
                 />
             </div>

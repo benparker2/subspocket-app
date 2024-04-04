@@ -15,10 +15,6 @@ export const actions = {
             })
         }
 
-        return fail(400, {
-            error: 'Invalid email.'
-        })
-
         const { error: err } = await supabase.auth.signUp({
             email: result.data.email as string,
             password: result.data.password as string,
@@ -32,6 +28,8 @@ export const actions = {
 
         if (err) {
 
+            console.log(err)
+
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {
                     error: 'Invalid email.'
@@ -44,13 +42,15 @@ export const actions = {
                 })
             }
 
+
+
             return fail(500, {
                 error: 'Server error. Please try again later.'
             })
         }
 
         return fail(200, {
-            message: 'Email sent! Check your inbox for the magic link.'
+            message: 'Email sent! Check your inbox to confirm your email.'
         })
     },
     oauth: async ({ url, locals: { supabase } }) => {

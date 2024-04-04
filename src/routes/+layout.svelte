@@ -23,7 +23,6 @@
 </script>
 
 <Toaster
-	theme="light"
 	expand={false}
 	position="top-center"
 	richColors

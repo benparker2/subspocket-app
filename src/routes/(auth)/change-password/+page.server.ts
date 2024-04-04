@@ -1,17 +1,13 @@
 import type { Actions } from "./$types";
-import { fail, redirect } from "@sveltejs/kit";
-import { AuthApiError, type Provider } from "@supabase/supabase-js";
+import { fail } from "@sveltejs/kit";
+import { AuthApiError } from "@supabase/supabase-js";
 
 export const actions = {
-    signin: async ({ request, locals: { supabase } }) => {
+    change: async ({ request, url, locals: { supabase } }) => {
         const formData = await request.formData()
-        const email = formData.get('email') as string
         const password = formData.get('password') as string
 
-        const { error: err } = await supabase.auth.signInWithPassword({
-            email,
-            password
-        })
+        const { error: err } = await supabase.auth.updateUser({ password })
 
         if (err) {
 
@@ -33,26 +29,7 @@ export const actions = {
         }
 
         return fail(200, {
-            message: 'Email sent! Check your inbox to confirm your email.'
+            message: 'Email sent! Check your inbox for the magic link.'
         })
     },
-    oauth: async ({ url, locals: { supabase } }) => {
-
-        const provider = url.searchParams.get('provider') as Provider
-
-        const { data, error: err } = await supabase.auth.signInWithOAuth({
-            provider,
-            options: {
-                redirectTo: `${url.origin}/auth/callback`
-            }
-        })
-
-        if (err) {
-            return fail(400, {
-                error: 'Something went wrong.'
-            })
-        }
-
-        redirect(302, data.url)
-    }
 } satisfies Actions
