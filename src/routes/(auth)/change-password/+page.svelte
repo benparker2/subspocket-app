@@ -29,7 +29,7 @@
                 Your password must be different from your previous one.
             </p>
         </div>
-        <form class="grid gap-4" method="POST" action="?/change" use:enhance>
+        <form class="grid gap-4" method="POST" action="?/changePassword" use:enhance>
             <div class="grid gap-2">
                 <InputPassword
                     id="password"

@@ -29,7 +29,7 @@
                 Include the email address associated with your account and we’ll send you an email with instructions to reset your password.
             </p>
         </div>
-        <form class="grid gap-4" method="POST" action="?/reset" use:enhance>
+        <form class="grid gap-4" method="POST" action="?/resetPassword" use:enhance>
             <div class="grid gap-2">
                 <Input
                     id="email"

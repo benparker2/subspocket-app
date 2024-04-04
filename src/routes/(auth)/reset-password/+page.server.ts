@@ -1,9 +1,9 @@
 import type { Actions } from "./$types";
-import { fail, redirect } from "@sveltejs/kit";
-import { AuthApiError, type Provider } from "@supabase/supabase-js";
+import { fail } from "@sveltejs/kit";
+import { AuthApiError } from "@supabase/supabase-js";
 
 export const actions = {
-    reset: async ({ request, url, locals: { supabase } }) => {
+    resetPassword: async ({ request, url, locals: { supabase } }) => {
         const formData = await request.formData()
         const email = formData.get('email') as string
 

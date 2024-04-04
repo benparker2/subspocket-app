@@ -3,7 +3,7 @@ import { fail } from "@sveltejs/kit";
 import { AuthApiError } from "@supabase/supabase-js";
 
 export const actions = {
-    change: async ({ request, url, locals: { supabase } }) => {
+    changePassword: async ({ request, url, locals: { supabase } }) => {
         const formData = await request.formData()
         const password = formData.get('password') as string
 
