@@ -23,14 +23,20 @@ export const supabase: Handle = async ({ event, resolve }) => {
     })
 
     /**
-    * A convenience helper so we can just call await getSession() instead const { data: { session } } = await supabase.auth.getSession()
-    */
-    event.locals.getSession = async () => {
-        const {
-            data: { session },
-        } = await event.locals.supabase.auth.getSession()
+     * Unlike `supabase.auth.getSession`, which is unsafe on the server because it
+     * doesn't validate the JWT, this function validates the JWT by first calling
+     * `getUser` and aborts early if the JWT signature is invalid.
+     */
+    event.locals.safeGetSession = async () => {
+        const { data: { user }, error } = await event.locals.supabase.auth.getUser()
 
-        return session
+        if (error) {
+            return { session: null, user: null }
+        }
+
+        const { data: { session } } = await event.locals.supabase.auth.getSession()
+
+        return { session, user }
     }
 
     return resolve(event, {
@@ -41,21 +47,22 @@ export const supabase: Handle = async ({ event, resolve }) => {
 }
 
 const authorization: Handle = async ({ event, resolve }) => {
+
+    const { session } = await event.locals.safeGetSession()
+
     // protect requests to all routes id that start with (app)
     if (event.route.id?.startsWith('/(app)')) {
-        const session = await event.locals.getSession()
         if (!session) {
             // the user is not signed in
-            throw redirect(303, '/sign-in')
+            redirect(303, '/sign-in')
         }
     }
 
     // protect requests to all routes id that start with (auth) except (auth)/sign-out
     if (event.route.id?.startsWith('/(auth)') && !event.route.id?.startsWith('/(auth)/sign-out')) {
-        const session = await event.locals.getSession()
         if (session) {
             // the user is not signed in
-            throw redirect(303, '/')
+            redirect(303, '/')
         }
     }
 
@@ -63,3 +70,4 @@ const authorization: Handle = async ({ event, resolve }) => {
 }
 
 export const handle = sequence(supabase, authorization)
+

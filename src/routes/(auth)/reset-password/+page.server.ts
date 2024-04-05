@@ -3,7 +3,7 @@ import { fail } from "@sveltejs/kit";
 import { AuthApiError } from "@supabase/supabase-js";
 
 export const actions = {
-    resetPassword: async ({ request, url, locals: { supabase } }) => {
+    reset_password: async ({ request, url, locals: { supabase } }) => {
         const formData = await request.formData()
         const email = formData.get('email') as string
 
@@ -12,6 +12,8 @@ export const actions = {
         })
 
         if (err) {
+
+            console.log(err)
 
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {

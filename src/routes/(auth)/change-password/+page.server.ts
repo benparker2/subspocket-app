@@ -3,13 +3,15 @@ import { fail } from "@sveltejs/kit";
 import { AuthApiError } from "@supabase/supabase-js";
 
 export const actions = {
-    changePassword: async ({ request, url, locals: { supabase } }) => {
+    change_password: async ({ request, locals: { supabase } }) => {
         const formData = await request.formData()
         const password = formData.get('password') as string
 
         const { error: err } = await supabase.auth.updateUser({ password })
 
         if (err) {
+
+            console.log(err)
 
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {

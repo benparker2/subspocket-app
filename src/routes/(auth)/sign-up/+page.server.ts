@@ -4,7 +4,7 @@ import { AuthApiError, type Provider } from "@supabase/supabase-js";
 import { formSchema } from "./formSchema";
 
 export const actions = {
-    signup: async ({ request, url, locals: { supabase } }) => {
+    sign_up: async ({ request, url, locals: { supabase } }) => {
         const formData = Object.fromEntries(await request.formData())
 
         const result = formSchema.safeParse(formData)

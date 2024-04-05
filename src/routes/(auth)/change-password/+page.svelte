@@ -7,13 +7,8 @@
 
     export let form: ActionData;
 
-    $: if (form?.error) {
-        toast.error(form.error);
-    }
-
-    $: if (form?.message) {
-        toast.success(form.message);
-    }
+    $: if (form?.error) toast.error(form.error);
+    $: if (form?.message) toast.success(form.message);
 </script>
 
 <svelte:head>
@@ -29,7 +24,7 @@
                 Your password must be different from your previous one.
             </p>
         </div>
-        <form class="grid gap-4" method="POST" action="?/changePassword" use:enhance>
+        <form class="grid gap-4" method="POST" action="?/change_password" use:enhance>
             <div class="grid gap-2">
                 <InputPassword
                     id="password"

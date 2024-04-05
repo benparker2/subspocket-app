@@ -3,7 +3,7 @@ import { fail, redirect } from "@sveltejs/kit";
 import { AuthApiError, type Provider } from "@supabase/supabase-js";
 
 export const actions = {
-    signin: async ({ request, locals: { supabase } }) => {
+    sign_in: async ({ request, locals: { supabase } }) => {
         const formData = await request.formData()
         const email = formData.get('email') as string
         const password = formData.get('password') as string
@@ -15,9 +15,11 @@ export const actions = {
 
         if (err) {
 
+            console.log(err)
+
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {
-                    error: 'Invalid email.'
+                    error: 'Invalid email or password.'
                 })
             }
 
@@ -31,10 +33,6 @@ export const actions = {
                 error: 'Server error. Please try again later.'
             })
         }
-
-        return fail(200, {
-            message: 'Email sent! Check your inbox to confirm your email.'
-        })
     },
     oauth: async ({ url, locals: { supabase } }) => {
 

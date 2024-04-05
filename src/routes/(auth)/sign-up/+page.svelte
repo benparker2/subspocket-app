@@ -9,13 +9,8 @@
 
     export let form: ActionData;
 
-    $: if (form?.error) {
-        toast.error(form.error);
-    }
-
-    $: if (form?.message) {
-        toast.success(form.message);
-    }
+    $: if (form?.error) toast.error(form.error);
+    $: if (form?.message) toast.success(form.message);
 </script>
 
 <svelte:head>
@@ -31,7 +26,7 @@
                 Already have an account? <a href="/sign-in" class="underline">Sign in</a>
             </p>
         </div>
-        <form class="grid gap-4" method="POST" action="?/signup" use:enhance>
+        <form class="grid gap-4" method="POST" action="?/sign_up" use:enhance>
             <div class="grid gap-2">
                 <Input
                     id="full_name"

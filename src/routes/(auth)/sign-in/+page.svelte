@@ -4,6 +4,12 @@
     import Input from "$lib/components/input/Input.svelte";
     import InputPassword from "$lib/components/input/InputPassword.svelte";
     import { Button } from "$lib/components/ui/button";
+    import { toast } from "svelte-sonner";
+    import type { ActionData } from "./$types";
+
+    export let form: ActionData;
+
+    $: if (form?.error) toast.error(form.error);
 </script>
 
 <svelte:head>
@@ -19,7 +25,7 @@
                 Don't have an account yet? <a href="/sign-up" class="underline">Sign up</a>
             </p>
         </div>
-        <form class="grid gap-4" method="POST" action="?/signin" use:enhance>
+        <form class="grid gap-4" method="POST" action="?/sign_in" use:enhance>
             <div class="grid gap-2">
                 <Input
                     id="email"
