@@ -28,8 +28,6 @@ export const actions = {
 
         if (err) {
 
-            console.log(err)
-
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {
                     error: 'Invalid email.'
@@ -41,8 +39,6 @@ export const actions = {
                     error: 'For security purposes, you can only request this once every 60 seconds. Please try again later.'
                 })
             }
-
-
 
             return fail(500, {
                 error: 'Server error. Please try again later.'

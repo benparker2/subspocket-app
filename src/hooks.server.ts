@@ -4,6 +4,7 @@ import { redirect, type Handle } from '@sveltejs/kit'
 import { sequence } from '@sveltejs/kit/hooks'
 
 export const supabase: Handle = async ({ event, resolve }) => {
+
     event.locals.supabase = createServerClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_KEY, {
         cookies: {
             get: (key) => event.cookies.get(key),
@@ -54,12 +55,12 @@ const authorization: Handle = async ({ event, resolve }) => {
     if (event.route.id?.startsWith('/(app)')) {
         if (!session) {
             // the user is not signed in
-            redirect(303, '/sign-in')
+            redirect(303, '/sign_in')
         }
     }
 
-    // protect requests to all routes id that start with (auth) except (auth)/sign-out
-    if (event.route.id?.startsWith('/(auth)') && !event.route.id?.startsWith('/(auth)/sign-out')) {
+    // protect requests to all routes id that start with (auth)
+    if (event.route.id?.startsWith('/(auth)')) {
         if (session) {
             // the user is not signed in
             redirect(303, '/')
@@ -70,4 +71,3 @@ const authorization: Handle = async ({ event, resolve }) => {
 }
 
 export const handle = sequence(supabase, authorization)
-

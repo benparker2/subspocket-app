@@ -14,7 +14,7 @@
     {id}
     {name}
     {placeholder}
-    class="{issues ? 'border-red-500' : ''}"
+    class="{issues ? 'border-red-500' : ''} h-12 mb-2 pl-12"
     {required}
 />
 {#if issues}

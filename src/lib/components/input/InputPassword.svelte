@@ -18,11 +18,11 @@
         {id}
         {name}
         {placeholder}
-        class="{issues ? 'border-red-500' : ''}"
+        class="{issues ? 'border-red-500' : ''} h-12 mb-2 pl-12"
         required
     />
     <Button
-        class="btn-password absolute right-0 top-0 border-none h-full px-3 py-2 bg-transparent hover:bg-transparent shadow-none"
+        class="btn-password absolute right-0 top-0 border-none h-12 bg-transparent hover:bg-transparent shadow-none"
         on:click="{ () => show_password = !show_password }"
     >
         {#if show_password}

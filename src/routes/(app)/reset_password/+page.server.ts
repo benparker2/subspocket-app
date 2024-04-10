@@ -1,17 +1,25 @@
 import type { Actions } from "./$types";
-import { fail } from "@sveltejs/kit";
+import { fail, redirect } from "@sveltejs/kit";
 import { AuthApiError } from "@supabase/supabase-js";
+import { formSchema } from "./formSchema";
 
 export const actions = {
-    change_password: async ({ request, locals: { supabase } }) => {
-        const formData = await request.formData()
-        const password = formData.get('password') as string
+    reset_password: async ({ request, locals: { supabase } }) => {
+        const formData = Object.fromEntries(await request.formData())
 
-        const { error: err } = await supabase.auth.updateUser({ password })
+        const result = formSchema.safeParse(formData)
+
+        if (!result.success) {
+            return fail(400, {
+                issues: result.error.format()
+            })
+        }
+
+        const { error: err } = await supabase.auth.updateUser({
+            password: result.data.password
+        })
 
         if (err) {
-
-            console.log(err)
 
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {
@@ -30,8 +38,6 @@ export const actions = {
             })
         }
 
-        return fail(200, {
-            message: 'Email sent! Check your inbox for the magic link.'
-        })
+        redirect(303, '/')
     },
 } satisfies Actions

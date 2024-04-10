@@ -3,17 +3,15 @@ import { fail } from "@sveltejs/kit";
 import { AuthApiError } from "@supabase/supabase-js";
 
 export const actions = {
-    reset_password: async ({ request, url, locals: { supabase } }) => {
+    forgot_password: async ({ request, url, locals: { supabase } }) => {
         const formData = await request.formData()
         const email = formData.get('email') as string
 
         const { error: err } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: `${url.origin}/change-password`
+            redirectTo: `${url.origin}/reset_password`
         })
 
         if (err) {
-
-            console.log(err)
 
             if (err instanceof AuthApiError && err.status === 400) {
                 return fail(400, {
@@ -33,7 +31,7 @@ export const actions = {
         }
 
         return fail(200, {
-            message: 'Email sent! Check your inbox for the magic link.'
+            message: 'Email sent! Check your inbox.'
         })
     },
 } satisfies Actions
