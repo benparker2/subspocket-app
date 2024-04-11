@@ -7,6 +7,7 @@
     export let name: string;
     export let placeholder: string;
     export let issues: any;
+    export let disabled: boolean = false;
 
     let show_password = false
     $: type = show_password ? 'text' : 'password'
@@ -19,6 +20,7 @@
         {name}
         {placeholder}
         class="{issues ? 'border-red-500' : ''} h-12 mb-2 pl-12"
+        {disabled}
         required
     />
     <Button

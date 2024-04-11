@@ -14,7 +14,7 @@
 </script>
 
 <svelte:head>
-    <title>Subspocket | Sign in</title>
+    <title>SubsPocket | Sign in</title>
 </svelte:head>
 
 <div class="h-full flex items-center justify-center">

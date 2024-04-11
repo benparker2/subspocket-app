@@ -7,6 +7,7 @@
     export let type: string;
     export let issues: any;
     export let required: boolean;
+    export let disabled: boolean = false;
 </script>
 
 <Input
@@ -16,6 +17,7 @@
     {placeholder}
     class="{issues ? 'border-red-500' : ''} h-12 mb-2 pl-12"
     {required}
+    {disabled}
 />
 {#if issues}
     <span class="text-xs text-red-500">

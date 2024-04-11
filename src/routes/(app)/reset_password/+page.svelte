@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-    <title>Subspocket | Reset password</title>
+    <title>SubsPocket | Reset password</title>
 </svelte:head>
 
 <div class="h-svh min-h-svh">
