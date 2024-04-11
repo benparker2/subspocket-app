@@ -5,8 +5,14 @@
     import type { ActionData } from "./$types";
     import InputPassword from "$lib/components/input/InputPassword.svelte";
     import { Lock, MoveRight } from "lucide-svelte";
+    import { goto } from "$app/navigation";
 
     export let form: ActionData;
+
+    $: if (form?.message) {
+        goto("/");
+        toast.success(form.message);
+    }
 
     $: if (form?.error) toast.error(form.error);
 </script>

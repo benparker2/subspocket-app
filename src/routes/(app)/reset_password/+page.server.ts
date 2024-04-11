@@ -27,6 +27,12 @@ export const actions = {
                 })
             }
 
+            if (err instanceof AuthApiError && err.status === 422) {
+                return fail(422, {
+                    error: 'Password identical to the old one, please enter a new one.'
+                })
+            }
+
             if (err instanceof AuthApiError && err.status === 429 && err.message === 'For security purposes, you can only request this once every 60 seconds') {
                 return fail(429, {
                     error: 'For security purposes, you can only request this once every 60 seconds. Please try again later.'
@@ -38,6 +44,8 @@ export const actions = {
             })
         }
 
-        redirect(303, '/')
+        return fail(200, {
+            message: 'Password successfully changed.'
+        })
     },
 } satisfies Actions
