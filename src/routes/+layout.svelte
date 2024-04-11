@@ -3,6 +3,7 @@
 	import "../app.pcss";
     import { invalidate } from '$app/navigation'
     import { onMount } from 'svelte'
+    import { Toaster } from "svelte-sonner";
 
     export let data
 
@@ -11,6 +12,7 @@
 
     onMount(() => {
 		const { data } = supabase.auth.onAuthStateChange((event, _session) => {
+
 			if (_session?.expires_at !== session?.expires_at) {
 				invalidate('supabase:auth')
 			}
@@ -18,8 +20,13 @@
 
 		return () => data.subscription.unsubscribe()
 	})
+
 </script>
 
-<div class="container" style="padding: 50px 0 100px 0">
-	<slot></slot>
-</div>
+<Toaster
+	expand={false}
+	position="top-center"
+	richColors
+/>
+
+<slot></slot>
